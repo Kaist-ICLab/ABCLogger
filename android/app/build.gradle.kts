@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.facebook.react")
+    id("com.google.gms.google-services")
 }
 react {}
 
@@ -56,15 +57,19 @@ android {
 }
 
 dependencies {
-    // The version of react-native is set by the React Native Gradle Plugin
+    // Dependency for React-Native
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
     implementation("com.facebook.react:hermes-android")
-//    if (hermesEnabled.toBoolean()) {
-//        implementation("com.facebook.react:hermes-android")
-//    } else {
-//        implementation jscFlavor
-//    }
+    // Dependency for Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
+    // Dependency for Koin Injection
+
 }
 
 val nativeModulesGradleFile = file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")

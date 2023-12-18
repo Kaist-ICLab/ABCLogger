@@ -21,6 +21,11 @@ jobs:
       - name : Setup Configurations
         run: npm install && cd android && chmod +x ./gradlew
 
+      - name: Create Google-services.json
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICE_JSON }}
+        run: (cat android/app/google-services.json | base64 ) && echo $DATA > android/app/google-services.json
+
       - name: Build Application
         run: cd android && ./gradlew assembleRelease --no-daemon
       

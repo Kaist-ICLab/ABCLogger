@@ -41,8 +41,7 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Release"
-          files: |
-            android/build/outputs/apk/release/app-release.apk
+          files: android/app/build/outputs/apk/release/app-release.apk
       # Distribution through Firebase App
       # - name: upload artifact to Firebase App Distribution
       #   uses: wzieba/Firebase-Distribution-Github-Action@v1

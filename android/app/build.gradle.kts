@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.facebook.react")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 react {}
 
@@ -23,6 +24,8 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName ="2023-12-18:001"
+
+        buildConfigField("String", "AUTH_CLIENT_ID", "\"${rootProject.extra.get("authClientId")}\"")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -67,8 +70,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-analytics")
     // Dependency for Koin Injection
+    implementation("io.insert-koin:koin-android:3.5.0")
+    implementation("io.insert-koin:koin-core-coroutines:3.5.0")
 
 }
 

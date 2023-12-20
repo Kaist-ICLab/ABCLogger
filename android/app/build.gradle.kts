@@ -25,7 +25,9 @@ android {
         versionCode = 1
         versionName ="2023-12-18:001"
 
-        buildConfigField("String", "AUTH_CLIENT_ID", "\"${rootProject.extra.get("authClientId")}\"")
+        buildConfigField("String", "ANDROID_CLIENT_ID", "\"${rootProject.extra.get("androidClientId")}\"")
+        buildConfigField("String", "WEB_CLIENT_ID", "\"${rootProject.extra.get("webClientId")}\"")
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -68,12 +70,15 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+//    implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     // Dependency for Koin Injection
     implementation("io.insert-koin:koin-android:3.5.0")
     implementation("io.insert-koin:koin-core-coroutines:3.5.0")
 
+    implementation("androidx.credentials:credentials:1.2.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.0")
 }
 
 val nativeModulesGradleFile = file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")

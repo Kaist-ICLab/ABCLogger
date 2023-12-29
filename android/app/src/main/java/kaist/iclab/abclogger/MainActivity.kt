@@ -20,17 +20,12 @@ class MainActivity : ReactActivity() {
     override fun createReactActivityDelegate(): ReactActivityDelegate =
         DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 
-//    override fun onStart() {
-//        super.onStart()
-//        login()
-//    }
     private var onActivityResult: OnActivityResult? = null
     private val forActivityResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ){
         result -> onActivityResult?.execute(result)
     }
-
 
     fun launchActivity(intent: Intent, onActivityResult_: (result:ActivityResult) -> Unit) {
         onActivityResult = object: OnActivityResult{
@@ -40,25 +35,6 @@ class MainActivity : ReactActivity() {
         }
         forActivityResult.launch(intent)
     }
-
-//    fun launchActivity(intent: PendingIntent, onActivityResult: (result: ActivityResult) -> Unit){
-//        val activityForResult = registerForActivityResult(
-//            ActivityResultContracts.StartIntentSenderForResult()){
-//                result -> onActivityResult(result)
-//        }
-//        activityForResult.launch(IntentSenderRequest.Builder(intent).build())
-//    }
-
-//    fun login(){
-//        val waitLogin = registerForActivityResult(
-//            ActivityResultContracts.StartActivityForResult()){
-//                result -> authRepo.onLoginInfo(result)
-//            }
-//
-//        val intent = authRepo.loginIntent(this@MainActivity)
-//        waitLogin.launch(intent)
-//    }
-
 }
 
 interface OnActivityResult{

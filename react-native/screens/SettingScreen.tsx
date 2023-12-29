@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { NativeModules, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { G, Path, Svg } from "react-native-svg";
 import LogoutModal from "../modals/LogoutModal";
 
@@ -8,7 +8,10 @@ const SettingScreen: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <LogoutModal visible={modalVisible} 
-                onLogout = {() => {console.log("sign out")}}
+                onLogout = {() => {
+                    NativeModules.AuthReactModule.logout()
+                    setModalVisible(false)
+                }}
                 onRequestClose={() => {setModalVisible(false)}} />
             <View style={styles.header}>
                 <Text style={styles.title}>Setting</Text>

@@ -1,9 +1,12 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { NativeModules, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Svg, { Path } from "react-native-svg";
 
 
 const LoginScreen: React.FC = () => {
+    const { AuthReactModule } = NativeModules;
+
+
     return (
         <SafeAreaView style={{ flex: 1 }} >
             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#007AC9', '#49B5FA']} style={{ flex: 1 }}>
@@ -13,7 +16,9 @@ const LoginScreen: React.FC = () => {
                         <Text style={{ fontSize: 14, color: "white" }}>{"Record your daily life"}</Text>
                     </View>
                     <TouchableOpacity
-                        onPress={() => { }}
+                        onPress={() => {
+                            AuthReactModule.login()
+                        }}
                         style={styles.loginButton}>
                         <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <Path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.88 16.79 15.71 17.57V20.34H19.28C21.36 18.42 22.56 15.6 22.56 12.25Z" fill="#4285F4" />

@@ -5,8 +5,8 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
-    name: Android CI/CD
+  build:
+    name: Android CD
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1.4.3
         with:
-          java-version: 17
+          java-version: 12334
 
       - name : Setup Configurations
         run: npm install && cd android && chmod +x ./gradlew
@@ -38,19 +38,14 @@ jobs:
 
       - name: Build Application
         run: cd android && ./gradlew assembleRelease --no-daemon
-      
-      # - name: Signing APK
-      #   id: sign_app
-      #   uses: r0adkll/sign-android-release@v1
-      #   with:
-      #     releaseDirectory: android/app/build/outputs/apk/release
-      #     signingKeyBase64: ${{ secrets.ANDROID_KEY_STORE_BASE64 }}
-      #     alias: ${{ secrets.ANDROID_ALIAS }}
-      #     keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-      #     keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
-  
-      
+      - name: Deploy using Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{secrets.FIREBASE_DISTRIBUTION_SERVICE_ACCOUNT}}
+          file: android/app/build/outputs/apk/release/app-release.apk
+            
       # - name: Release to Github Repo
       #   uses: "marvinpinto/action-automatic-releases@latest"
       #   with:
@@ -60,18 +55,15 @@ jobs:
       #     title: "Release"
       #     files: android/app/build/outputs/apk/release/app-release.apk
 
-      - name: Deploy using Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{secrets.FIREBASE_DISTRIBUTION_SERVICE_ACCOUNT}}
-          file: android/app/build/outputs/apk/release/app-release.apk
-
-      - name: Notify Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: Github Action Test
-          fields: job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Notify Slack on Success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"Build successful! :tada:"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Notify Slack on Failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"Build failed! :x:"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}

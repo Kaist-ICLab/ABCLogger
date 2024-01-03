@@ -34,7 +34,7 @@ jobs:
       - name: Create upload.keystore
         env:
           DATA: ${{ secrets.UPLOAD_KEYSTORE }}
-        run: echo $DATA | base64 --decode > android/app/upload.keystore
+        run: echo $DATA > tmp.txt && base64 -d -i tmp.txt > android/app/upload.keystore
 
       - name: Build Application
         run: cd android && ./gradlew assembleRelease --no-daemon

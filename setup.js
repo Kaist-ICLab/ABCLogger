@@ -14,6 +14,9 @@ try {
   console.log(`Version Code: ${versionCode}`);
   console.log(`Version Name: ${versionName}`);
 
+  console.log(github_output);
+
+
   // Set the output variables for later use in the workflow
   fs.appendFileSync(github_output,`versionCode=${versionCode}`);
   fs.appendFileSync(github_output,`versionName=${versionName}`);

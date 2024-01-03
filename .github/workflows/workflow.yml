@@ -47,8 +47,8 @@ jobs:
           file: android/app/build/outputs/apk/release/app-release.apk
       
       - name: Get app version
-      id: get_version
-      uses: eriknyk/android-get-app-version-action@v1.0.1
+        id: get_version
+        uses: eriknyk/android-get-app-version-action@v1.0.1
 
       - name: Release to Github Repo
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -66,6 +66,7 @@ jobs:
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"Build successful! :tada:"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
+        
       - name: Notify Slack on Failure
         if: failure()
         run: |

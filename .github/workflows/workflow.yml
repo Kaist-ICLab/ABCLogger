@@ -31,7 +31,7 @@ jobs:
           DATA: ${{ secrets.SECRETS }}
         run: echo $DATA > secrets.json
 
-      - name: Create secrets.json
+      - name: Create upload.keystore
         env:
           DATA: ${{ secrets.UPLOAD_KEYSTORE }}
         run: echo $DATA > android/app/upload.keystore

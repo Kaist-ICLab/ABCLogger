@@ -24,7 +24,7 @@ jobs:
       - name: Create Google-services.json
         env:
           DATA: ${{ secrets.GOOGLE_SERVICE_JSON }}
-        run: base64 -d $DATA > android/app/google-services.json
+        run: echo $DATA > android/app/google-services.json
 
       - name: Create secrets.json
         env:

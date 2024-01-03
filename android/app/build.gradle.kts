@@ -1,4 +1,5 @@
 import groovy.lang.Closure
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
 
 plugins {
     id("com.android.application")
@@ -6,6 +7,7 @@ plugins {
     id("com.facebook.react")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.firebase.appdistribution")
 }
 react {}
 
@@ -14,16 +16,16 @@ react {}
 
 
 android {
-    ndkVersion = "25.1.8937393"
-    compileSdk = 34
+    ndkVersion = rootProject.extra.get("ndkVersion").toString()
+    compileSdk = rootProject.extra.get("compileSdkVersion") as Int
 
     namespace =  "kaist.iclab.abclogger"
     defaultConfig {
         applicationId = "kaist.iclab.abclogger"
-        minSdk = 21
-        targetSdk = 34
+        minSdk = rootProject.extra.get("minSdkVersion") as Int
+        targetSdk = rootProject.extra.get("targetSdkVersion") as Int
         versionCode = 2
-        versionName ="2024-01-03:001"
+        versionName = "2024-01-03:001"
         resourceConfigurations += arrayOf("en")
         buildConfigField("String", "ANDROID_CLIENT_ID", "\"${rootProject.extra.get("androidClientId")}\"")
         buildConfigField("String", "WEB_CLIENT_ID", "\"${rootProject.extra.get("webClientId")}\"")
@@ -34,7 +36,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = rootProject.extra.get("kotlinVersion").toString()
     }
     buildFeatures{
         buildConfig = true
@@ -52,6 +54,9 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
         release {
+            firebaseAppDistribution {
+                artifactType = "APK"
+            }
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig = signingConfigs.getByName("debug")

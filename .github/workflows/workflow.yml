@@ -60,12 +60,11 @@ jobs:
       #     title: "Release"
       #     files: android/app/build/outputs/apk/release/app-release.apk
 
-      - name: Deply using Firebase App Distribution
+      - name: Deploy using Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{secrets.FIREBASE_DISTRIBUTION_SERVICE_ACCOUNT}}
-          groups: testers
           file: android/app/build/outputs/apk/release/app-release.apk
 
       - name: Notify Slack

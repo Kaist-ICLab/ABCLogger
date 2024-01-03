@@ -14,8 +14,8 @@ try {
   console.log(`Version Name: ${versionName}`);
 
   // Set the output variables for later use in the workflow
-  console.log(`{versionCode}=={${versionCode}} >> $GITHUB_OUTPUT`);
-  console.log(`{versionName}=={${versionName}} >> $GITHUB_OUTPUT`);
+  console.log(`{versionCode}={${versionCode}} >> $GITHUB_OUTPUT`);
+  console.log(`{versionName}={${versionName}} >> $GITHUB_OUTPUT`);
 } catch (error) {
   console.error('Error reading version.json:', error.message);
   process.exit(1);

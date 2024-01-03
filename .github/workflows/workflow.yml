@@ -55,7 +55,7 @@ jobs:
         with:
           title: 'Release ${{ steps.get_version.outputs.versionName }}(VersionCode: ${{ steps.get_version.outputs.versionCode }})'
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ steps.get_version.outputs.versionName}}"
+          automatic_release_tag: "v${{ steps.get_version.outputs.versionName}}"
           files: android/app/build/outputs/apk/release/app-release.apk
 
       - name: Notify Slack on Success

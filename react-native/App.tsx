@@ -16,15 +16,14 @@ const App: React.FC = () => {
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(NativeModules.AuthReactModule);
     let eventListener = eventEmitter.addListener('AuthState', event => {
-      setCurrentUser(event)
-      console.log(event)
+      setCurrentUser(event);
+      console.log(event);
     });
-
     // Removes the listener once unmounted
     return () => {
       eventListener.remove();
     };
-  })
+  },[]);
 
   return (
       currentUser?.isNull? <LoginScreen/>: <SettingScreen/>

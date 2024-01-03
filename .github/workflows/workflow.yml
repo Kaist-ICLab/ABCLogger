@@ -24,7 +24,17 @@ jobs:
       - name: Create Google-services.json
         env:
           DATA: ${{ secrets.GOOGLE_SERVICE_JSON }}
-        run: (cat android/app/google-services.json | base64 ) && echo $DATA > android/app/google-services.json
+        run: echo $DATA > android/app/google-services.json
+
+      - name: Create secrets.json
+        env:
+          DATA: ${{ secrets.SECRETS }}
+        run: echo $DATA > secrets.json
+
+      - name: Create secrets.json
+        env:
+          DATA: ${{ secrets.UPLOAD_KEYSTORE }}
+        run: echo $DATA > android/app/upload.keystore
 
       - name: Build Application
         run: cd android && ./gradlew assembleRelease --no-daemon

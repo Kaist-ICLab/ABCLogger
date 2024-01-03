@@ -22,9 +22,9 @@ android {
         applicationId = "kaist.iclab.abclogger"
         minSdk = 21
         targetSdk = 34
-        versionCode = 1
-        versionName ="2023-12-18:001"
-
+        versionCode = 2
+        versionName ="2024-01-03:001"
+        resourceConfigurations += arrayOf("en")
         buildConfigField("String", "ANDROID_CLIENT_ID", "\"${rootProject.extra.get("androidClientId")}\"")
         buildConfigField("String", "WEB_CLIENT_ID", "\"${rootProject.extra.get("webClientId")}\"")
 
@@ -41,10 +41,10 @@ android {
     }
     signingConfigs {
         getByName("debug"){
-            storeFile =  file("debug.keystore")
-            storePassword = "android"
-            keyAlias ="androiddebugkey"
-            keyPassword = "android"
+            storeFile =  file(rootProject.extra.get("androidKeyStorePath").toString())
+            storePassword = rootProject.extra.get("androidKeyStorePassword").toString()
+            keyAlias = rootProject.extra.get("androidKeyAlias").toString()
+            keyPassword = rootProject.extra.get("androidKeyPassword").toString()
         }
     }
     buildTypes {
@@ -69,9 +69,8 @@ dependencies {
     // Dependency for Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-auth-ktx")
-//    implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     // Dependency for Koin Injection
     implementation("io.insert-koin:koin-android:3.5.0")

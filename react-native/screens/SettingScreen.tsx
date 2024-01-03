@@ -7,12 +7,12 @@ const SettingScreen: React.FC = () => {
     const [modalVisible, setModalVisible] = useState(false);
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <LogoutModal visible={modalVisible} 
-                onLogout = {() => {
+            <LogoutModal visible={modalVisible}
+                onLogout={() => {
                     NativeModules.AuthReactModule.logout()
                     setModalVisible(false)
                 }}
-                onRequestClose={() => {setModalVisible(false)}} />
+                onRequestClose={() => { setModalVisible(false) }} />
             <View style={styles.header}>
                 <Text style={styles.title}>Setting</Text>
             </View>
@@ -24,7 +24,7 @@ const SettingScreen: React.FC = () => {
                             <Text style={styles.propertyName}>User name</Text>
                             <Text style={styles.propertyStatus}>{"Tester (tester@gmail.com)"}</Text>
                         </View>
-                        <TouchableOpacity onPress = {() => {
+                        <TouchableOpacity onPress={() => {
                             setModalVisible(true)
                         }}>
                             <Svg fill="none" width="28" height="28">
@@ -36,7 +36,11 @@ const SettingScreen: React.FC = () => {
 
                     </View>
                 </View>
-
+                <TouchableOpacity onPress={() => {
+                    NativeModules.AuthReactModule.testCrashFunc();
+                }} style={{ backgroundColor: "#999", padding: 10 }}>
+                    <Text>{"TEST Crash"}</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );

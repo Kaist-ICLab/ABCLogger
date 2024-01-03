@@ -1,16 +1,20 @@
 package kaist.iclab.abclogger.auth
 
+import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kaist.iclab.abclogger.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.RuntimeException
 
 
 class AuthReactModule(
@@ -43,10 +47,9 @@ class AuthReactModule(
     @ReactMethod
     fun addListener(eventName: String) {
         if (listenerCount == 0) {
-            val authFlow = authRepo.currentUserFlow()
             if (listener == null) {
                 listener = CoroutineScope(Dispatchers.IO).launch {
-                    authFlow.collect {
+                    authRepo.currentUserFlow().collect {
                         val map = WritableNativeMap()
                         map.putBoolean("isNull", it == null)
                         map.putString("name", it?.displayName ?: "")
@@ -66,5 +69,11 @@ class AuthReactModule(
             listener?.cancel()
             listener = null
         }
+    }
+    @ReactMethod
+    fun testCrashFunc(){
+        Log.d(TAG, "TEST")
+        Firebase.crashlytics.log("TEST CRASH")
+        Firebase.crashlytics.recordException(RuntimeException("TEST CRASH"))
     }
 }

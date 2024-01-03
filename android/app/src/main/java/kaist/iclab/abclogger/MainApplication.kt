@@ -11,11 +11,14 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import java.lang.RuntimeException
 
 class MainApplication : Application(), ReactApplication {
 
@@ -49,6 +52,7 @@ class MainApplication : Application(), ReactApplication {
       load()
     }
 
+    Firebase.crashlytics.setUserId(null.toString())
     startKoin {
       androidContext(this@MainApplication)
       androidLogger(level = Level.NONE)

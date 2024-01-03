@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import kaist.iclab.abclogger.BuildConfig
 import kotlinx.coroutines.CoroutineScope
@@ -34,15 +35,22 @@ class AuthRepo(
     fun currentUserFlow(): Flow<FirebaseUser?> {
         return callbackFlow {
             if(authStateListener ==  null){
-                authStateListener = AuthStateListener() {
-                    trySendBlocking(it.currentUser)
+                authStateListener = object: AuthStateListener {
+                    override fun onAuthStateChanged(auth: FirebaseAuth) {
+                        Log.d(TAG, "onAuthStateChanged")
+                        trySend(auth.currentUser)
+                    }
+                }
+                auth.addAuthStateListener(authStateListener!!)
+            }
+            awaitClose {
+                authStateListener?.let{ listener ->
+                    auth.removeAuthStateListener(listener)
+                    authStateListener = null
+                    Log.d(TAG, "AuthStateListener Removed")
                 }
             }
-            auth.addAuthStateListener(authStateListener!!)
-            awaitClose { 
-                auth.removeAuthStateListener(authStateListener!!)
-                authStateListener = null
-            }
+            Log.d(TAG, "AuthStateListener Removed2")
         }
     }
 
@@ -67,6 +75,7 @@ class AuthRepo(
                     is GoogleIdTokenCredential -> {
                         Log.d(TAG, credential.id)
                         val firebaseCredential = GoogleAuthProvider.getCredential(credential.idToken, null)
+                        Firebase.crashlytics.setUserId(credential.id)
                         auth.signInWithCredential(firebaseCredential)
                     }
                     else -> {
@@ -81,6 +90,9 @@ class AuthRepo(
     }
 
     fun logout() {
+        Log.d(TAG, "${authStateListener == null}")
+        Log.d(TAG, "logout")
+        Firebase.crashlytics.setUserId(null.toString())
         auth.signOut()
     }
 }

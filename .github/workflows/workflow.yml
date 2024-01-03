@@ -48,7 +48,7 @@ jobs:
       
       - name: Get app version
         id: get_version
-        run: node setup.js
+        run: echo "versionName=versionName" >> $GITHUB_OUTPUT
 
       - name: Release to Github Repo
         uses: "marvinpinto/action-automatic-releases@latest"

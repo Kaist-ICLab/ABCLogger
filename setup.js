@@ -10,8 +10,8 @@ try {
   const versionName = jsonData.versionName;
 
   // Set the output variables for later use in the workflow
-  console.log(github_output,`versionCode=${versionCode}`);
-  console.log(github_output,`versionName=${versionName}`);
+  console.log(`versionCode=${versionCode}`);
+  console.log(`versionName=${versionName}`);
 } catch (error) {
   console.error('Error reading version.json:', error.message);
   process.exit(1);

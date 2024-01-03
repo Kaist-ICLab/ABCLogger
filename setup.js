@@ -11,8 +11,8 @@ try {
   const versionName = jsonData.versionName;
 
 // //   // Output the extracted values
-  log_stdout.write(`Version Code: ${versionCode}`);
-  log_stdout.write(`Version Name: ${versionName}`);
+//   log_stdout.write(`Version Code: ${versionCode}`);
+//   log_stdout.write(`Version Name: ${versionName}`);
 
   // Set the output variables for later use in the workflow
   console.log(`{versionCode}={${versionCode}}`);

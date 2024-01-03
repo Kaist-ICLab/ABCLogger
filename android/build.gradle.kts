@@ -15,9 +15,14 @@ buildscript {
         set("targetSdkVersion", 34)
         set("ndkVersion", "25.1.8937393")
         set("kotlinVersion", JavaVersion.VERSION_17.toString())
-        val jsonObject = groovy.json.JsonSlurper().parseText(file("../secrets.json").readText()) as Map<String, Any>
+        val secretObject = groovy.json.JsonSlurper().parseText(file("../secrets.json").readText()) as Map<String, Any>
         // Insert key-value pairs into rootProject.extra
-        jsonObject.forEach {
+        secretObject.forEach {
+                (key,value) -> set(key,value)
+        }
+        val versionObject = groovy.json.JsonSlurper().parseText(file("app/version.json").readText()) as Map<String, Any>
+        // Insert key-value pairs into rootProject.extra
+        versionObject.forEach {
                 (key,value) -> set(key,value)
         }
     }

@@ -24,8 +24,8 @@ android {
         applicationId = "kaist.iclab.abclogger"
         minSdk = rootProject.extra.get("minSdkVersion") as Int
         targetSdk = rootProject.extra.get("targetSdkVersion") as Int
-        versionCode = 2
-        versionName = "2024-01-03:001"
+        versionCode = rootProject.extra.get("versionCode") as Int
+        versionName = rootProject.extra.get("versionName").toString()
         resourceConfigurations += arrayOf("en")
         buildConfigField("String", "ANDROID_CLIENT_ID", "\"${rootProject.extra.get("androidClientId")}\"")
         buildConfigField("String", "WEB_CLIENT_ID", "\"${rootProject.extra.get("webClientId")}\"")

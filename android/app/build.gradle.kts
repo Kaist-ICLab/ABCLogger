@@ -75,7 +75,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-config")
     implementation("com.google.firebase:firebase-auth-ktx")
+
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     // Dependency for Koin Injection
     implementation("io.insert-koin:koin-android:3.5.0")

@@ -8,6 +8,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.appdistribution")
+    id("kotlin-kapt")
 }
 react {}
 
@@ -77,14 +78,24 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-config")
     implementation("com.google.firebase:firebase-auth-ktx")
-
+    // Auth Credential Using Google OAuth
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
-    // Dependency for Koin Injection
-    implementation("io.insert-koin:koin-android:3.5.0")
-    implementation("io.insert-koin:koin-core-coroutines:3.5.0")
 
-    implementation("androidx.credentials:credentials:1.2.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.2.0")
+    // Dependency for Koin Injection
+    val koin_version = "3.5.0"
+    implementation("io.insert-koin:koin-android:$koin_version")
+    implementation("io.insert-koin:koin-core-coroutines:$koin_version")
+    // Dependency for Credential Manager
+    val credential_version = "1.2.0"
+    implementation("androidx.credentials:credentials:$credential_version")
+    implementation("androidx.credentials:credentials-play-services-auth:$credential_version")
+    // Dependency for Room DB
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version") //KSP 사용시 오류...
+
 }
 
 val nativeModulesGradleFile = file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")

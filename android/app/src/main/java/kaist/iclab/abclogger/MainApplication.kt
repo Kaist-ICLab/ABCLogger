@@ -1,6 +1,7 @@
 package kaist.iclab.abclogger
 
 import android.app.Application
+import androidx.room.Room
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -28,7 +29,7 @@ class MainApplication : Application(), ReactApplication {
           // packages.add(new MyReactNativePackage());
 
           return PackageList(this).packages.apply {
-              add(MainReactPackage(get(), get()))
+              add(MainReactPackage(get(), get(), get()))
           }
         }
 

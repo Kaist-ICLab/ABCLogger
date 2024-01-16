@@ -14,7 +14,7 @@ buildscript {
         set("compileSdkVersion", 34)
         set("targetSdkVersion", 34)
         set("ndkVersion", "25.1.8937393")
-        set("kotlinVersion", JavaVersion.VERSION_17.toString())
+        set("kotlinVersion", "1.8.21")
         // Insert key-value pairs into rootProject.extra
         val secretObject = groovy.json.JsonSlurper().parseText(file("../secrets.json").readText()) as Map<String, Any>
         secretObject.forEach {

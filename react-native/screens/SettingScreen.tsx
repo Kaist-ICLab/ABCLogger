@@ -2,45 +2,71 @@ import { useState } from "react";
 import { NativeModules, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { G, Path, Svg } from "react-native-svg";
 import LogoutModal from "../modals/LogoutModal";
+import LoggingStatusModal from "../modals/LoggingStatusModal";
 
 const SettingScreen: React.FC = () => {
-    const [modalVisible, setModalVisible] = useState(false);
+    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+    const [loggingStatusModalVisible, setLoggingStatusModalVisible] = useState(false);
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <LogoutModal visible={modalVisible}
+            <LogoutModal visible={logoutModalVisible}
                 onLogout={() => {
                     NativeModules.AuthReactModule.logout()
-                    setModalVisible(false)
+                    setLogoutModalVisible(false)
                 }}
-                onRequestClose={() => { setModalVisible(false) }} />
+                onRequestClose={() => { setLogoutModalVisible(false) }} />
+            <LoggingStatusModal visible={loggingStatusModalVisible}
+                onButtonClick={() => {
+                    NativeModules.AuthReactModule.logout()
+                    setLoggingStatusModalVisible(false)
+                }}
+                onRequestClose={() => { setLoggingStatusModalVisible(false) }}
+                currentStatus = {false} />
             <View style={styles.header}>
                 <Text style={styles.title}>Setting</Text>
             </View>
             <View style={styles.body}>
-                <Text style={styles.containerTitle}>General</Text>
                 <View style={styles.container}>
-                    <View style={styles.property}>
-                        <View>
-                            <Text style={styles.propertyName}>User name</Text>
-                            <Text style={styles.propertyStatus}>{"Tester (tester@gmail.com)"}</Text>
-                        </View>
-                        <TouchableOpacity onPress={() => {
-                            setModalVisible(true)
-                        }}>
-                            <Svg fill="none" width="28" height="28">
-                                <G clip-path="url(#clip0_14_823)">
-                                    <Path d="M10.0217 19.355L15.365 14L10.0217 8.645L11.6667 7L18.6667 14L11.6667 21L10.0217 19.355Z" fill="#434343" />
-                                </G>
-                            </Svg>
-                        </TouchableOpacity>
+                    <Text style={styles.containerTitle}>General</Text>
+                    <View style={styles.containerBody}>
+                        <View style={styles.property}>
+                            <View>
+                                <Text style={styles.propertyName}>User name</Text>
+                                <Text style={styles.propertyStatus}>{"Tester (tester@gmail.com)"}</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => {
+                                setLogoutModalVisible(true)
+                            }}>
+                                <Svg fill="none" width="28" height="28">
+                                    <G clip-path="url(#clip0_14_823)">
+                                        <Path d="M10.0217 19.355L15.365 14L10.0217 8.645L11.6667 7L18.6667 14L11.6667 21L10.0217 19.355Z" fill="#434343" />
+                                    </G>
+                                </Svg>
+                            </TouchableOpacity>
 
+                        </View>
                     </View>
                 </View>
-                <TouchableOpacity onPress={() => {
-                    NativeModules.AuthReactModule.testCrashFunc();
-                }} style={{ backgroundColor: "#999", padding: 10 }}>
-                    <Text>{"TEST Crash"}</Text>
-                </TouchableOpacity>
+                <View style={styles.container}>
+                    <Text style={styles.containerTitle}>Collector</Text>
+                    <View style={styles.containerBody}>
+                        <View style={styles.property}>
+                            <View>
+                                <Text style={styles.propertyName}>Logging status</Text>
+                                <Text style={styles.propertyStatus}>{String(false)}</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => {
+                                setLoggingStatusModalVisible(true)
+                            }}>
+                                <Svg fill="none" width="28" height="28">
+                                    <G clip-path="url(#clip0_14_823)">
+                                        <Path d="M10.0217 19.355L15.365 14L10.0217 8.645L11.6667 7L18.6667 14L11.6667 21L10.0217 19.355Z" fill="#434343" />
+                                    </G>
+                                </Svg>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
             </View>
         </SafeAreaView>
     );
@@ -64,6 +90,11 @@ const styles = StyleSheet.create({
         padding: 15,
         flexDirection: "column",
         alignItems: "flex-start",
+        gap: 20
+    },
+    container: {
+        flexDirection: "column",
+        alignItems: "flex-start",
         gap: 10
     },
     containerTitle: {
@@ -72,7 +103,7 @@ const styles = StyleSheet.create({
         letterSpacing: .6,
         textTransform: "uppercase"
     },
-    container: {
+    containerBody: {
         paddingHorizontal: 10,
         width: "100%",
         flexDirection: "column",

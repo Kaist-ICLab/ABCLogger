@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -72,14 +73,20 @@ class AuthRepo(
                     request
                 ).credential
                 when (credential) {
-                    is GoogleIdTokenCredential -> {
-                        Log.d(TAG, credential.id)
-                        val firebaseCredential = GoogleAuthProvider.getCredential(credential.idToken, null)
-                        Firebase.crashlytics.setUserId(credential.id)
-                        auth.signInWithCredential(firebaseCredential)
+                    is CustomCredential -> {
+                        if(credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL){
+                            val googleCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                            Log.d(TAG, googleCredential.id)
+                            val firebaseCredential = GoogleAuthProvider.getCredential(
+                                googleCredential.idToken, null)
+                            Firebase.crashlytics.setUserId(googleCredential.id)
+                            auth.signInWithCredential(firebaseCredential)
+                        }else{
+                            Log.e(TAG, "Unexpected type of credential ${credential.type}")
+                        }
                     }
                     else -> {
-                        Log.e(TAG, "Unexpected type of credential")
+                        Log.e(TAG, "Unexpected type of credential ${credential.type}")
                     }
                 }
             } catch (e: GetCredentialException) {

@@ -6,7 +6,7 @@ type Props = {
     visible: boolean,
     currentStatus: boolean,
     onRequestClose: () => void,
-    onButtonClick: () => void,
+    onButtonClick: (status: boolean) => void,
 }
 
 const LoggingStatusModal: React.FC<Props> = ({ visible, onRequestClose, onButtonClick, currentStatus }) => {
@@ -30,15 +30,15 @@ const LoggingStatusModal: React.FC<Props> = ({ visible, onRequestClose, onButton
                         >
                             <View style={{flexDirection:"row", alignItems:"center"}}>
                                 <RadioButton value="true" />
-                                <Text>First</Text>
+                                <Text>True</Text>
                             </View>
                             <View style={{flexDirection:"row", alignItems:"center"}}>
                                 <RadioButton value="false" />
-                                <Text>Second</Text>
+                                <Text>False</Text>
                             </View>
                         </RadioButton.Group>
                     </View>
-                    <TouchableOpacity style={styles.button} onPress={() => { onButtonClick() }}>
+                    <TouchableOpacity style={styles.button} onPress={() => { onButtonClick(checked) }}>
                         <Text style={styles.buttonText}>Apply</Text>
                     </TouchableOpacity>
                 </View>

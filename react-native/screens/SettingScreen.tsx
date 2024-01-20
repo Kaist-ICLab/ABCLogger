@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NativeModules, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { G, Path, Svg } from "react-native-svg";
 import LogoutModal from "../modals/LogoutModal";
@@ -7,6 +7,15 @@ import LoggingStatusModal from "../modals/LoggingStatusModal";
 const SettingScreen: React.FC = () => {
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
     const [loggingStatusModalVisible, setLoggingStatusModalVisible] = useState(false);
+    const [isLogging, setIsLogging] = useState(false);
+    useEffect(() => {
+        console.log(isLogging);
+        if(isLogging){
+            NativeModules.CollectorReactModule.start()
+        }else{
+            NativeModules.CollectorReactModule.stop()
+        }
+    },[isLogging])
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <LogoutModal visible={logoutModalVisible}
@@ -16,12 +25,14 @@ const SettingScreen: React.FC = () => {
                 }}
                 onRequestClose={() => { setLogoutModalVisible(false) }} />
             <LoggingStatusModal visible={loggingStatusModalVisible}
-                onButtonClick={() => {
-                    NativeModules.AuthReactModule.logout()
+                onButtonClick={(status: boolean) => {
                     setLoggingStatusModalVisible(false)
+                    setIsLogging(status)
                 }}
-                onRequestClose={() => { setLoggingStatusModalVisible(false) }}
-                currentStatus = {false} />
+                onRequestClose={() => { 
+                    setLoggingStatusModalVisible(false)
+                 }}
+                currentStatus = {isLogging} />
             <View style={styles.header}>
                 <Text style={styles.title}>Setting</Text>
             </View>

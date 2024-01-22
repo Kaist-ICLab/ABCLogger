@@ -29,8 +29,6 @@ const App: React.FC = () => {
     return () => {
       eventListener.remove();
     };
-
-
   }, []);
 
   return (

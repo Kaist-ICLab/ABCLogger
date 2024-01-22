@@ -45,7 +45,11 @@ jobs:
           appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{secrets.FIREBASE_DISTRIBUTION_SERVICE_ACCOUNT}}
           file: android/app/build/outputs/apk/release/app-release.apk
-      
+
+      - name: Update app version
+        id: update_firebase_remote_config
+        run: node CD/updateFirebaseRemoteConfig.js
+
       - name: Get app version
         id: get_version
         run: node CD/getVersion.js >> $GITHUB_OUTPUT

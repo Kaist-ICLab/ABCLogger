@@ -1,38 +1,107 @@
 import { useEffect, useState } from "react";
 import { NativeModules, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { G, Path, Svg } from "react-native-svg";
-import LogoutModal from "../modals/LogoutModal";
-import LoggingStatusModal from "../modals/LoggingStatusModal";
+import AbstractModal from "../AbstractModal";
+import { RadioButton } from "react-native-paper";
+
+
+
+type AuthInfoProps = {
+    name: String,
+    email: String
+}
+
+const AuthInfoComponent: React.FC<AuthInfoProps> = ({ name, email }) => {
+    const [isModalVisible, setModalVisible] = useState(false);
+    return (
+        <View style={styles.property}>
+            <AbstractModal
+                description={"Logout"}
+                visible={isModalVisible}
+                onRequestClose={() => setModalVisible(false)}
+                onChangeConfirmed={() => { console.log("button Clicked") }}
+            >
+                <Text>{
+                    "Do you really want to sign out?" + "\n" +
+                    "It will delete all locally saved data"
+                }</Text>
+            </AbstractModal>
+            <View>
+                <Text style={styles.propertyName}>User name</Text>
+                <Text style={styles.propertyStatus}>{`${name}(${email})`}</Text>
+            </View>
+            <TouchableOpacity onPress={() => {
+                setModalVisible(true)
+            }}>
+                <Svg fill="none" width="28" height="28">
+                    <G clip-path="url(#clip0_14_823)">
+                        <Path d="M10.0217 19.355L15.365 14L10.0217 8.645L11.6667 7L18.6667 14L11.6667 21L10.0217 19.355Z" fill="#434343" />
+                    </G>
+                </Svg>
+            </TouchableOpacity>
+        </View>
+    )
+}
+
+const CollectorStatusComponent: React.FC = ({ }) => {
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [isCollecting, setCollecting] = useState(false);
+    let prevCollector = false; 
+    useEffect(() => {
+        if(isModalVisible){
+            prevCollector = isCollecting
+        }
+    },[isModalVisible])
+    useEffect(() => {
+        // isCollecting?
+        //     NativeModules.CollectorReactModule.start():
+        //     NativeModules.CollectorReactModule.stop()
+    }, [isCollecting])
+    return (
+        <View style={styles.property}>
+            <AbstractModal
+                description={"Collection Status"}
+                visible={isModalVisible}
+                onRequestClose={() => {
+                    setModalVisible(false)
+                    setCollecting(prevCollector)
+                }}
+                onChangeConfirmed={() => { console.log("button Clicked") }}
+            >
+                <RadioButton.Group
+                    onValueChange={value => setCollecting(value === "true")}
+                    value={String(isCollecting)}
+                >
+                    <View style={{flexDirection:"row", alignItems:"center"}}>
+                        <RadioButton value="true" />
+                        <Text>On</Text>
+                    </View>
+                    <View style={{flexDirection:"row", alignItems:"center"}}>
+                        <RadioButton value="false" />
+                        <Text>Off</Text>
+                    </View>
+                </RadioButton.Group>
+            </AbstractModal>
+            <View>
+                <Text style={styles.propertyName}>Collector Status</Text>
+                <Text style={styles.propertyStatus}>{isCollecting? "ON": "OFF"}</Text>
+            </View>
+            <TouchableOpacity onPress={() => {
+                setModalVisible(true)
+            }}>
+                <Svg fill="none" width="28" height="28">
+                    <G clip-path="url(#clip0_14_823)">
+                        <Path d="M10.0217 19.355L15.365 14L10.0217 8.645L11.6667 7L18.6667 14L11.6667 21L10.0217 19.355Z" fill="#434343" />
+                    </G>
+                </Svg>
+            </TouchableOpacity>
+        </View>
+    )
+}
 
 const SettingScreen: React.FC = () => {
-    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-    const [loggingStatusModalVisible, setLoggingStatusModalVisible] = useState(false);
-    const [isLogging, setIsLogging] = useState(false);
-    useEffect(() => {
-        console.log(isLogging);
-        if(isLogging){
-            NativeModules.CollectorReactModule.start()
-        }else{
-            NativeModules.CollectorReactModule.stop()
-        }
-    },[isLogging])
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <LogoutModal visible={logoutModalVisible}
-                onLogout={() => {
-                    NativeModules.AuthReactModule.logout()
-                    setLogoutModalVisible(false)
-                }}
-                onRequestClose={() => { setLogoutModalVisible(false) }} />
-            <LoggingStatusModal visible={loggingStatusModalVisible}
-                onButtonClick={(status: boolean) => {
-                    setLoggingStatusModalVisible(false)
-                    setIsLogging(status)
-                }}
-                onRequestClose={() => { 
-                    setLoggingStatusModalVisible(false)
-                 }}
-                currentStatus = {isLogging} />
             <View style={styles.header}>
                 <Text style={styles.title}>Setting</Text>
             </View>
@@ -40,42 +109,13 @@ const SettingScreen: React.FC = () => {
                 <View style={styles.container}>
                     <Text style={styles.containerTitle}>General</Text>
                     <View style={styles.containerBody}>
-                        <View style={styles.property}>
-                            <View>
-                                <Text style={styles.propertyName}>User name</Text>
-                                <Text style={styles.propertyStatus}>{"Tester (tester@gmail.com)"}</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => {
-                                setLogoutModalVisible(true)
-                            }}>
-                                <Svg fill="none" width="28" height="28">
-                                    <G clip-path="url(#clip0_14_823)">
-                                        <Path d="M10.0217 19.355L15.365 14L10.0217 8.645L11.6667 7L18.6667 14L11.6667 21L10.0217 19.355Z" fill="#434343" />
-                                    </G>
-                                </Svg>
-                            </TouchableOpacity>
-
-                        </View>
+                        <AuthInfoComponent email={"email"} name={"name"} />
                     </View>
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.containerTitle}>Collector</Text>
                     <View style={styles.containerBody}>
-                        <View style={styles.property}>
-                            <View>
-                                <Text style={styles.propertyName}>Logging status</Text>
-                                <Text style={styles.propertyStatus}>{String(false)}</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => {
-                                setLoggingStatusModalVisible(true)
-                            }}>
-                                <Svg fill="none" width="28" height="28">
-                                    <G clip-path="url(#clip0_14_823)">
-                                        <Path d="M10.0217 19.355L15.365 14L10.0217 8.645L11.6667 7L18.6667 14L11.6667 21L10.0217 19.355Z" fill="#434343" />
-                                    </G>
-                                </Svg>
-                            </TouchableOpacity>
-                        </View>
+                        <CollectorStatusComponent/>
                     </View>
                 </View>
             </View>

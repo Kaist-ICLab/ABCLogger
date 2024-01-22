@@ -6,7 +6,6 @@ import Svg, { Path } from "react-native-svg";
 const LoginScreen: React.FC = () => {
     const { AuthReactModule } = NativeModules;
 
-
     return (
         <SafeAreaView style={{ flex: 1 }} >
             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#007AC9', '#49B5FA']} style={{ flex: 1 }}>

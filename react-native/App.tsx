@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import SettingScreen from './screens/SettingScreen';
+import { NativeEventEmitter, NativeModules, SafeAreaView, Text } from 'react-native';
+import AbstractModal from './AbstractModal';
 import LoginScreen from './screens/LoginScreen';
-import { NativeEventEmitter, NativeModules, SafeAreaView } from 'react-native';
-import UpdateModal from './modals/UpdateModal';
+import SettingScreen from './screens/SettingScreen';
 
 
 type user = {
@@ -13,8 +13,8 @@ type user = {
 }
 
 const App: React.FC = () => {
-  const [ currentUser, setCurrentUser] = useState<user>();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [currentUser, setCurrentUser] = useState<user>();
+  const [modalVisible, setModalVisible] = useState(true);
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(NativeModules.AuthReactModule);
     let eventListener = eventEmitter.addListener('AuthState', event => {
@@ -30,22 +30,25 @@ const App: React.FC = () => {
       eventListener.remove();
     };
 
-    
-  },[]);
+
+  }, []);
 
   return (
-    <SafeAreaView style ={{flex:1}}>
-       {currentUser?.isNull? <LoginScreen/>: <SettingScreen/>}
-       <UpdateModal visible = {modalVisible}
-          onRequestClose={() => { setModalVisible(false)  }}
-          onUpdate={() => {
-            NativeModules.MaintenanceReactModule.update()
-          }}
-       />
+    <SafeAreaView style={{ flex: 1 }}>
+      {currentUser?.isNull ? <LoginScreen /> : <SettingScreen />}
+      <AbstractModal
+        description='Update Released'
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        onChangeConfirmed={() => NativeModules.MaintenanceReactModule.update()}
+      >
+        <Text>
+          Updated Version Released! {"\n"}
+          Please check download the app and update
+        </Text>
+      </AbstractModal>
     </SafeAreaView>
   )
-  
-
 }
 
 export default App;

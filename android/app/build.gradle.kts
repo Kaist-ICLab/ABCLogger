@@ -96,6 +96,9 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$room_version")
     kapt("androidx.room:room-compiler:$room_version") //KSP 사용시 오류...
 
+    val datastore_version = "1.1.0-beta01"
+    implementation("androidx.datastore:datastore-preferences:$datastore_version")
+
 }
 
 val nativeModulesGradleFile = file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")

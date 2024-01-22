@@ -1,0 +1,9 @@
+syntax ="proto3";
+
+message CollectorSetting {
+  bool isCollecting = 1;
+
+}
+message TestEvent {
+  int32 collectorFreq = 1;
+}

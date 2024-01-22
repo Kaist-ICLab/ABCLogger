@@ -45,6 +45,11 @@ jobs:
           appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{secrets.FIREBASE_DISTRIBUTION_SERVICE_ACCOUNT}}
           file: android/app/build/outputs/apk/release/app-release.apk
+      
+      - name: Create Firebase Admin SDK
+        env:
+          DATA: ${{ secrets.FIREBASE_ADMIN_SDK }}
+        run: echo $DATA > firebase-admin-sdk.json
 
       - name: Update app version
         id: update_firebase_remote_config

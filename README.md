@@ -15,3 +15,7 @@ npx react-native run-android
             - 값이 일정하게 기록되는 지 확인
     - Sticky Notification 및 ForegroundService 생성
         - start에 생기고, stop에 없어지는 지 확인
+
+
+Firebase RemoteConfig Udpates
+https://cloud.google.com/docs/authentication/application-default-credentials?hl=ko

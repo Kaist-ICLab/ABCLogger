@@ -1,7 +1,10 @@
 const fs = require('fs')
 var admin = require("firebase-admin");
 
-admin.initializeApp();
+var serviceAccount = require("../firebase-admin-sdk.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 editNPublishTemplate()
 function editNPublishTemplate() {

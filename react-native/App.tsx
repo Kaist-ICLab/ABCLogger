@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { NativeEventEmitter, NativeModules, SafeAreaView, Text } from 'react-native';
-import AbstractModal from './AbstractModal';
+import AbstractModal from './components/AbstractModal';
 import LoginScreen from './screens/LoginScreen';
 import SettingScreen from './screens/SettingScreen';
 
